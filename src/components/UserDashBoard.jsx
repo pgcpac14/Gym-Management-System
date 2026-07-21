@@ -1,43 +1,42 @@
+import { NavLink, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Logout from "./Logout";
-
-function UserDashBoard() {
-
-    const user = useSelector(
-        state => state.auth.user
-    )
-
-    return (
-
-        <div className="container mt-5">
-
-            <div className="d-flex justify-content-between">
-
-                <h2>
-                    Dashboard
-                </h2>
-
-                <Logout />
-
-            </div>
-
-            <hr />
-
-            <h4>
-                Welcome {user?.username}
-            </h4>
-
-            <h5>
-                User ID : {user?.userid}
-            </h5>
-
-            <h5>
-                Role ID : {user?.role}
-            </h5>
-
+export default function UserDashBoard(){
+    const auth = useSelector(state => state.auth)
+    return(
+        <>
+        <div className="dashboard-header d-flex justify-content-between align-items-center">
+             <h3 className="fitcore-logo">🏋️ FitCore</h3>
+            <span className="text-muted">Welcome, <strong>{auth.name}</strong> | Member</span>
         </div>
+        <div className="d-flex">
+            <div className="sidebar p-3">
+                <h6 className="text-uppercase text-muted mb-3" style={{fontSize:"12px"}}>Member Panel</h6>
+                <ul className="nav nav-pills flex-column">
+                    <li className="nav-item">
+                        <NavLink to="" end className="nav-link">Dashboard</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="subscription" className="nav-link">Subscription</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="workout-plan" className="nav-link">Workout Plan</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="diet-plan" className="nav-link">Diet Plan</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink to="progress-report" className="nav-link">Progress Report</NavLink>
+                    </li>
+                    <li className="nav-item mt-3">
+                        <NavLink to="logout" className="nav-link text-danger">Logout</NavLink>
+                    </li>
+                </ul>
+            </div>
+            <div className="p-4 flex-grow-1">
+                <Outlet />
+            </div>
+        </div>
+        </>
     )
 }
-
-export default UserDashBoard;
