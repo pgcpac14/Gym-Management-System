@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import axiosInstance from "../../api/axiosInstance"
+import { adminApi as axiosInstance } from "../../api/axiosInstance"
 
 export default function TrainersList(){
     const [trainers, setTrainers] = useState([])

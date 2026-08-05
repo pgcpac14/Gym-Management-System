@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
-import axiosInstance from "../../api/axiosInstance"
+import { memberApi as axiosInstance } from "../../api/axiosInstance"
 
 export default function WorkoutPlanMember(){
     const auth = useSelector(state => state.auth)
