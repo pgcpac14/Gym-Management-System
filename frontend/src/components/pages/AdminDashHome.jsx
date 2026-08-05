@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import axiosInstance from "../../api/axiosInstance"
+import { adminApi as axiosInstance } from "../../api/axiosInstance"
 
 export default function AdminDashHome(){
     const auth = useSelector(state => state.auth)

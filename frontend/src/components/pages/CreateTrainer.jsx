@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axiosInstance from "../../api/axiosInstance"
+import { adminApi as axiosInstance } from "../../api/axiosInstance"
 
 export default function CreateTrainer(){
     const [form, setForm] = useState({
