@@ -73,6 +73,32 @@ export default function SubscriptionMember(){
                             <h6 className="text-muted mb-1">Total Fees Paid</h6>
                             <p className="fs-5 fw-semibold text-success mb-0">₹{status.fees}</p>
                         </div>
+
+                        <div className="col-12"><hr /></div>
+
+                        <div className="col-md-6">
+                            <h6 className="text-muted mb-1">Gym Subscription Start</h6>
+                            <p className="fs-5 mb-0">{status.subscriptionStart || "-"}</p>
+                        </div>
+                        <div className="col-md-6">
+                            <h6 className="text-muted mb-1">Gym Subscription End</h6>
+                            <p className={`fs-5 mb-0 ${status.expired ? "text-danger fw-semibold" : ""}`}>
+                                {status.subscriptionEnd || "-"} {status.expired && "(Expired)"}
+                            </p>
+                        </div>
+
+                        {status.trainerName && (
+                            <>
+                                <div className="col-md-6">
+                                    <h6 className="text-muted mb-1">Trainer Assigned On</h6>
+                                    <p className="fs-5 mb-0">{status.trainerAssignedDate || "-"}</p>
+                                </div>
+                                <div className="col-md-6">
+                                    <h6 className="text-muted mb-1">Trainer Coverage Until</h6>
+                                    <p className="fs-5 mb-0">{status.subscriptionEnd || "-"}</p>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
