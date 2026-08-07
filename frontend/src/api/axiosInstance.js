@@ -19,7 +19,7 @@ function createApi(port) {
   return instance;
 }
 
-export const authApi = createApi(8081);
-export const adminApi = createApi(8082);
-export const trainerApi = createApi(8083);
-export const memberApi = createApi(8084);
+export const authApi = createApi(8080);
+export const adminApi = createApi(8080);
+export const memberApi = createApi(8080);
+export const trainerApi = createApi(8080);

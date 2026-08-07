@@ -32,10 +32,8 @@ export default function TrainerWorkoutPlans(){
         setSelections({ ...selections, [mid]: workoutPlanId })
     }
 
-    const handleAssign = (mid) => {
+    const doAssign = (mid) => {
         const workoutPlanId = selections[mid]
-        if(!workoutPlanId) return
-
         setSavingMid(mid)
         setMsg("")
         axiosInstance.put("/trainer/assign-workout-plan", { mid, workoutPlanId: Number(workoutPlanId) })
@@ -48,6 +46,40 @@ export default function TrainerWorkoutPlans(){
                 setMsg("Something went wrong. Please try again.")
             })
             .finally(() => setSavingMid(null))
+    }
+
+    const handleAssign = (mid, memberGoalName) => {
+        const workoutPlanId = selections[mid]
+        if(!workoutPlanId) return
+
+        const selectedPlan = plans.find(p => String(p.woPid) === String(workoutPlanId))
+        const planGoalName = selectedPlan ? selectedPlan.goalName : null
+
+        const isMismatch = planGoalName && memberGoalName && planGoalName !== memberGoalName
+
+        if(isMismatch){
+            const confirmed = window.confirm(
+                `This member's goal is "${memberGoalName}" — you're about to assign a "${planGoalName}" plan instead. Assign anyway?`
+            )
+            if(!confirmed) return
+        }
+
+        doAssign(mid)
+    }
+
+    // Group plans by goal for optgroup rendering, matching-goal plans listed first per member
+    const groupPlansByGoal = (memberGoalName) => {
+        const matching = plans.filter(p => p.goalName === memberGoalName)
+        const others = plans.filter(p => p.goalName !== memberGoalName)
+
+        const otherGroups = {}
+        others.forEach(p => {
+            const key = p.goalName || "Other"
+            if(!otherGroups[key]) otherGroups[key] = []
+            otherGroups[key].push(p)
+        })
+
+        return { matching, otherGroups }
     }
 
     return(
@@ -75,7 +107,9 @@ export default function TrainerWorkoutPlans(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {members.map((m) => (
+                                {members.map((m) => {
+                                    const { matching, otherGroups } = groupPlansByGoal(m.goalName)
+                                    return (
                                     <tr key={m.mid}>
                                         <td>{m.name}</td>
                                         <td><span className="badge bg-info text-dark">{m.goalName || "Not Set"}</span></td>
@@ -87,10 +121,25 @@ export default function TrainerWorkoutPlans(){
                                                 onChange={(e) => handleSelect(m.mid, e.target.value)}
                                             >
                                                 <option value="" disabled>Choose a plan</option>
-                                                {plans.map(p => (
-                                                    <option key={p.woPid} value={p.woPid}>
-                                                        {p.wname} ({p.goalName})
-                                                    </option>
+
+                                                {matching.length > 0 && (
+                                                    <optgroup label={`Recommended — ${m.goalName}`}>
+                                                        {matching.map(p => (
+                                                            <option key={p.woPid} value={p.woPid}>
+                                                                {p.wname}
+                                                            </option>
+                                                        ))}
+                                                    </optgroup>
+                                                )}
+
+                                                {Object.keys(otherGroups).map(goalKey => (
+                                                    <optgroup key={goalKey} label={`Other — ${goalKey}`}>
+                                                        {otherGroups[goalKey].map(p => (
+                                                            <option key={p.woPid} value={p.woPid}>
+                                                                {p.wname}
+                                                            </option>
+                                                        ))}
+                                                    </optgroup>
                                                 ))}
                                             </select>
                                         </td>
@@ -98,13 +147,14 @@ export default function TrainerWorkoutPlans(){
                                             <button
                                                 className="btn btn-sm btn-primary"
                                                 disabled={savingMid === m.mid || !selections[m.mid]}
-                                                onClick={() => handleAssign(m.mid)}
+                                                onClick={() => handleAssign(m.mid, m.goalName)}
                                             >
                                                 {savingMid === m.mid ? "Saving..." : "Assign"}
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>

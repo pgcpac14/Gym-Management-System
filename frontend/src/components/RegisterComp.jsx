@@ -149,13 +149,15 @@ export default function RegisterComp() {
                                         Age
                                     </label>
                                     <input
-                                        type="number"
-                                        className="form-control"
-                                        placeholder="Enter age"
-                                        value={age}
-                                        onChange={(e) => setage(e.target.value)}
-                                        required
-                                    />
+    type="number"
+    className="form-control"
+    placeholder="Enter age"
+    value={age}
+    onChange={(e) => setage(e.target.value)}
+    min="1"
+    max="120"
+    required
+/>
                                 </div>
 
                                 <div className="mb-3">
