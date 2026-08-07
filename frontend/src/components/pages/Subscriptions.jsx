@@ -46,8 +46,12 @@ export default function Subscriptions(){
                                     <th>Package</th>
                                     <th>Duration</th>
                                     <th>Price</th>
+                                    <th>Gym Start</th>
+                                    <th>Gym End</th>
                                     <th>Trainer Type</th>
                                     <th>Assigned Trainer</th>
+                                    <th>Trainer Assigned On</th>
+                                    <th>Trainer Coverage Until</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,8 +63,12 @@ export default function Subscriptions(){
                                         <td><span className="badge bg-success">{m.packageName}</span></td>
                                         <td>{m.durationMonths} Month{m.durationMonths > 1 ? "s" : ""}</td>
                                         <td>₹{m.price}</td>
+                                        <td>{m.subscriptionStart || "-"}</td>
+                                        <td>{m.subscriptionEnd || "-"}</td>
                                         <td>{m.trainerType || "-"}</td>
                                         <td>{m.trainerName || <span className="badge bg-warning text-dark">Not Assigned</span>}</td>
+                                        <td>{m.trainerAssignedDate || "-"}</td>
+                                        <td>{m.trainerEndDate || "-"}</td>
                                     </tr>
                                 ))}
                             </tbody>

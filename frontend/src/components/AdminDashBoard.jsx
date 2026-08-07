@@ -1,14 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import FitCoreHeader from "./FitCoreHeader";
 
 export default function AdminDashBoard(){
     const auth = useSelector(state => state.auth)
     return(
         <>
-        <div className="dashboard-header d-flex justify-content-between align-items-center">
-            <h5 className="mb-0 text-primary fw-bold">🏋️ Gym Management System</h5>
-            <span className="text-muted">Welcome, <strong>{auth.name}</strong> | Admin</span>
-        </div>
+        <FitCoreHeader welcomeName={auth.name} role="Admin" />
         <div className="d-flex">
             <div className="sidebar p-3">
                 <h6 className="text-uppercase text-muted mb-3" style={{fontSize:"12px"}}>Admin Panel</h6>
